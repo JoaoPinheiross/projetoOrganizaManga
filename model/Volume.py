@@ -23,7 +23,7 @@ class Volume:
         return self.__nome
     
     @nome.setter
-    def nome(self, nome: str):
+    def nome(self, nome: str) -> None:
         self.__nome = nome
 
     @property
@@ -39,5 +39,5 @@ class Volume:
         return self.__capitulos
     
     @capitulos.setter
-    def capitulos(self, capitulos: List[Capitulo]):
+    def capitulos(self, capitulos: List[Capitulo]) -> None:
         self.__capitulos = capitulos

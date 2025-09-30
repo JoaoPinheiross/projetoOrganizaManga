@@ -23,7 +23,7 @@ class Manga:
         return self.__nome
     
     @nome.setter
-    def nome(self, nome: str):
+    def nome(self, nome: str) -> None:
         self.__nome = nome
 
     @property
@@ -31,7 +31,7 @@ class Manga:
         return self.__autor
     
     @autor.setter
-    def autor(self, autor: str):
+    def autor(self, autor: str) -> None:
         self.__autor = autor
 
     @property
@@ -39,5 +39,5 @@ class Manga:
         return self.__volumes
     
     @volumes.setter
-    def volumes(self, volumes: List[Volume]):
+    def volumes(self, volumes: List[Volume]) -> None:
         self.__volumes = volumes

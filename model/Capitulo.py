@@ -21,7 +21,7 @@ class Capitulo:
         return self.__nome
     
     @nome.setter
-    def nome(self, nome: str):
+    def nome(self, nome: str) -> None:
         self.__nome = nome
 
     @property
@@ -29,7 +29,7 @@ class Capitulo:
         return self.__numero
 
     @numero.setter
-    def numero(self, numero: float):
+    def numero(self, numero: float) -> None:
         self.__numero = numero
 
     @property
@@ -37,5 +37,5 @@ class Capitulo:
         return self.__paginas
     
     @paginas.setter
-    def paginas(self, paginas: List[Pagina]):
+    def paginas(self, paginas: List[Pagina]) -> None:
         self.__paginas = paginas
