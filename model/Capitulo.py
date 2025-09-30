@@ -7,7 +7,7 @@ class Capitulo:
         ARGS:
             nome (str): Nome do capítulo.
             numero (float): Número do capítulo.
-            paginas (List[paginas]): Uma lista das páginas do manga.
+            paginas (List[Pagina]): Uma lista das páginas do capitulo.
         Return:
             None: Não possuí retorno.
         '''
