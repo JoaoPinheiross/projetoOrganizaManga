@@ -1,5 +1,7 @@
 from typing import List
 
+from model.Pagina import Pagina
+
 class Capitulo:
     # Construtor
     def __init__(self, nome: str, numero: float, paginas: List[Pagina]) -> None:
