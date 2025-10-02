@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from Base import Base
+from model.Base import Base
 '''from model.Autor import Autor
 from model.Volume import Volume'''
 
