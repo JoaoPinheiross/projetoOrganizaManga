@@ -4,5 +4,5 @@ from model.ConfigManga import ConfigManga
 
 class ConfigMangaDao(Protocol):
     # Lista a configuração do manga atual
-    def listarConfig(self) -> ConfigManga:
+    def listarConfig(self) -> ConfigManga: #type: ignore
         pass

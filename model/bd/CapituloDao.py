@@ -3,8 +3,8 @@ from typing import List, Protocol
 from model.Capitulo import Capitulo
 
 class CapituloDao(Protocol):
-    def listarCapitulo(self) -> List[Capitulo]:
+    def listarCapitulo(self) -> List[Capitulo]: #type: ignore
         pass
 
-    def pesquisarCapitulo(self, codCapitulo: int) -> Capitulo:
+    def pesquisarCapitulo(self, codCapitulo: int) -> Capitulo: #type: ignore
         pass

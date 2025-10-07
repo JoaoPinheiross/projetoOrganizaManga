@@ -14,7 +14,7 @@ class MangaDaoImpl:
     def listarMangas(self) -> List[Manga]:
         with self.Session() as session:
             query = select(Manga)
-            mangas = session.scalars(query).all()
+            mangas = list(session.scalars(query).all())
 
         return mangas
     

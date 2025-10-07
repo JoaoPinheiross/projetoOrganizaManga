@@ -14,7 +14,7 @@ class CapituloDaoImpl():
     def listarCapitulo(self) -> List[Capitulo]:
         with self.Session() as session:
             query = select(Capitulo)
-            capitulos = session.scalars(query).all()
+            capitulos = list(session.scalars(query).all())
 
         return capitulos
 

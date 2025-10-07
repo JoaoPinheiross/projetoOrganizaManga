@@ -11,6 +11,12 @@ class ConfigMangaDaoImpl():
     Session = sessionmaker(bind=engine)
 
     def listarConfig(self) -> ConfigManga:
+        '''Seleciona a primeira configuração de manga.
+        Args:
+            Não possuí parâmetros.
+        Returns:
+            ConfigManga: Manga atual da configuração.
+        '''
         with self.Session() as session:
             query = select(ConfigManga)
             mangaAtual = session.scalars(query).one()

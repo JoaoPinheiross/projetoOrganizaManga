@@ -14,7 +14,7 @@ class VolumeDaoImpl():
     def listarVolume(self) -> List[Volume]:
         with self.Session() as session:
             query = select(Volume)
-            volumes = session.scalars(query).all()
+            volumes = list(session.scalars(query).all())
 
         return volumes
 
