@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, Column
 from sqlalchemy.orm import sessionmaker
 from urllib.parse import quote_plus
 from typing import List
@@ -18,7 +18,7 @@ class CapituloDaoImpl():
 
         return capitulos
 
-    def pesquisarCapitulo(self, codCapitulo: int) -> Capitulo:
+    def pesquisarCapitulo(self, codCapitulo: Column) -> Capitulo:
         with self.Session() as session:
             query = select(Capitulo).where(Capitulo.idCapitulo == codCapitulo)
             capitulo = session.scalars(query).first()

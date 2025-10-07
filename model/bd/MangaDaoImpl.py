@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, Column
 from sqlalchemy.orm import sessionmaker
 from urllib.parse import quote_plus
 from typing import List
@@ -18,7 +18,7 @@ class MangaDaoImpl:
 
         return mangas
     
-    def pesquisarManga(self, codManga) -> Manga:
+    def pesquisarManga(self, codManga: Column) -> Manga:
         with self.Session() as session:
             query = select(Manga).where(Manga.idManga == codManga)
             manga = session.scalars(query).first()

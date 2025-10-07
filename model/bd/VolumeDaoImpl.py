@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, select, Column
 from sqlalchemy.orm import sessionmaker
 from urllib.parse import quote_plus
 from typing import List
@@ -18,7 +18,7 @@ class VolumeDaoImpl():
 
         return volumes
 
-    def pesquisarVolume(self, codVolume: int) -> Volume:
+    def pesquisarVolume(self, codVolume: Column) -> Volume:
         with self.Session() as session:
             query = select(Volume).where(Volume.idVolume == codVolume)
             volumes = session.scalars(query).first()
