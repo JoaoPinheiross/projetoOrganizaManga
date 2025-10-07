@@ -1,43 +1,20 @@
 from typing import List
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
-from model.Capitulo import Capitulo
+from model.Base import Base
 
-class Volume:
-    # Construtor
-    def __init__(self, nome: str, numero: int, capitulos: List[Capitulo]) -> None:
-        '''Inicia o objeto da classe Volume com um nome, número, e uma lista de capitulos.
-        ARGS:
-            nome (str): Nome do volume.
-            numero (int): Número do volume.
-            capitulos (List[Capitulo]): Uma lista de capitulos do volume.
-        Return:
-            None: Não possuí retorno.
-        '''
-        self.__nome = nome
-        self.__numero = numero
-        self.__capitulos = capitulos
+class Volume(Base):
+    # nome da tabela
+    __tablename__ = "volumes"
 
-    # Métodos Getter e Setter
-    @property
-    def nome(self) -> str:
-        return self.__nome
-    
-    @nome.setter
-    def nome(self, nome: str) -> None:
-        self.__nome = nome
+    # colunas da tabela
+    idVolume = Column(Integer, primary_key=True, autoincrement=True)
+    numero = Column(Integer, nullable=False)
+    nome = Column(String(80), nullable=False)
+    idManga = Column(Integer, ForeignKey("mangas.idManga"), nullable=False)
 
-    @property
-    def numero(self) -> int:
-        return self.__numero
-    
-    @numero.setter
-    def numero(self, numero) -> None:
-        self.__numero = numero
-
-    @property
-    def capitulos(self) -> List[Capitulo]:
-        return self.__capitulos
-    
-    @capitulos.setter
-    def capitulos(self, capitulos: List[Capitulo]) -> None:
-        self.__capitulos = capitulos
+    # relacionamentos da tabela
+    manga = relationship("Manga", back_populates="volumes")
+    capitulos = relationship("Capitulo", back_populates="volumes")
+    configM = relationship("ConfigManga", back_populates="volumes")
