@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from model.Base import Base
 from model.Autor import Autor
@@ -10,9 +10,9 @@ class Manga(Base):
     __tablename__ = "mangas"
 
     # colunas da tabela
-    idManga = Column(Integer, primary_key=True, autoincrement=True)
-    nome = Column(String(60), nullable=False)
-    idAutor = Column(Integer, ForeignKey("autores.idAutor"), nullable=False)
+    idManga: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    nome: Mapped[str] = mapped_column(String(60), nullable=False)
+    idAutor: Mapped[int] = mapped_column(Integer, ForeignKey("autores.idAutor"), nullable=False)
 
     # relacionamentos da tabela
     autor = relationship("Autor", back_populates="mangas")
