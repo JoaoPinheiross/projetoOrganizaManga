@@ -8,16 +8,14 @@ class MangaController:
     def __init__(self):
         self.mangaService = MangaService()
     
-    def mostrarCaminho(self, codManga: int) -> str:
-        '''Retorna o caminho do manga.
+    def organizaManga(self) -> None:
+        '''Organiza os capitulos baixados.
         Args:
-            codManga (int): Código do manga.
+            Não possuí argumentos.
         Returns
-            str: Caminho do manga
+            Não possuí retornos.
         '''
-        manga = self.mangaService.definirCaminho(codManga)
-
-        return manga
+        self.mangaService.organizarManga()
     
     def listarMangas(self) -> List[Manga]:
         '''Lista os mangas do banco de dados.
@@ -30,6 +28,16 @@ class MangaController:
         
         return lista
     
+    def listarVolumes(self, idManga):
+        lista = self.mangaService.listarVolumes(idManga)
+
+        return lista
+    
+    def listarCapitulos(self, idVolume):
+        lista = self.mangaService.listarCapitulos(idVolume)
+
+        return lista
+    
     def listaConfig(self) -> str:
         '''Pesquisa a configuração de manga atual.
         Args:
@@ -40,3 +48,6 @@ class MangaController:
         mangaAtual = self.mangaService.listaConfig()
 
         return mangaAtual
+    
+    def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
+        return self.mangaService.saveConfig(idManga, idVolume, idCapitulo)
