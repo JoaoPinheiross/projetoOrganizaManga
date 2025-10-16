@@ -22,3 +22,28 @@ class ConfigMangaDaoImpl():
             mangaAtual = session.scalars(query).one()
 
         return mangaAtual
+    
+    def saveConfig(self, idManga: int, idVolume: int, idCapitulo: int) -> str:
+        '''Salva a nova configuração de manga.
+        Args:
+            Não possuí parâmetros.
+        Returns:
+            ConfigManga: Manga atual da configuração.
+        '''
+        with self.Session() as session:
+            try:
+                config = session.get(ConfigManga, 1)
+
+                if config:
+                    config.idManga = idManga
+                    config.idVolume = idVolume
+                    config.idCapitulo = idCapitulo
+                    session.commit()
+                    msg = "Configuração atualizada com sucesso!"
+                else:
+                    msg = f"Manga com ID {idManga} não encontrado."
+            except Exception as e:
+                session.rollback()
+                msg = f"Ocorreu um erro: {e}"
+        
+        return msg
