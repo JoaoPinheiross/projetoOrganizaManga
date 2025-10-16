@@ -18,7 +18,7 @@ class TelaMenu(Tela):
             ent = int(input())
 
             casos = {
-                1: "dev",
+                1: lambda: self.mangaController.organizaManga(),
                 2: lambda: self.telaConfigManga.exibir(),
                 3: "capa",
                 4: lambda: self.encerrar()
