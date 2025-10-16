@@ -11,16 +11,16 @@ class VolumeDaoImpl():
 
     Session = sessionmaker(bind=engine)
 
-    def listarVolume(self) -> List[Volume]:
+    def listarVolumes(self, codManga) -> List[Volume]:
         with self.Session() as session:
-            query = select(Volume)
+            query = select(Volume).where(Volume.idManga == codManga)
             volumes = list(session.scalars(query).all())
 
         return volumes
 
-    def pesquisarVolume(self, codVolume: Column) -> Volume:
+    def pesquisarVolume(self, codVolume: int) -> Volume:
         with self.Session() as session:
-            query = select(Volume).where(Volume.idVolume == codVolume)
-            volumes = session.scalars(query).first()
+            query = select(Volume)
+            volume = session.get(Volume, codVolume)
 
-        return volumes
+        return volume

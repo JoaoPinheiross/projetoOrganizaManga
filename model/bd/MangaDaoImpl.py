@@ -18,9 +18,9 @@ class MangaDaoImpl:
 
         return mangas
     
-    def pesquisarManga(self, codManga: Column) -> Manga:
+    def pesquisarManga(self, codManga: int) -> Manga:
         with self.Session() as session:
-            query = select(Manga).where(Manga.idManga == codManga)
-            manga = session.scalars(query).first()
+            query = select(Manga)
+            manga = session.get(Manga, codManga)
 
         return manga

@@ -11,16 +11,16 @@ class CapituloDaoImpl():
 
     Session = sessionmaker(bind=engine)
 
-    def listarCapitulo(self) -> List[Capitulo]:
+    def listarCapitulo(self, codVol) -> List[Capitulo]:
         with self.Session() as session:
-            query = select(Capitulo)
+            query = select(Capitulo).where(Capitulo.idVolume == codVol)
             capitulos = list(session.scalars(query).all())
 
         return capitulos
 
-    def pesquisarCapitulo(self, codCapitulo: Column) -> Capitulo:
+    def pesquisarCapitulo(self, codCapitulo: int) -> Capitulo:
         with self.Session() as session:
             query = select(Capitulo).where(Capitulo.idCapitulo == codCapitulo)
-            capitulo = session.scalars(query).first()
+            capitulo = session.get(Capitulo, codCapitulo)
 
         return capitulo
