@@ -1,3 +1,5 @@
+from typing import Optional
+
 from view.Tela import Tela
 
 class TelaConfigManga(Tela):
@@ -5,6 +7,7 @@ class TelaConfigManga(Tela):
         super().__init__(mangaController)
 
     def exibir(self):
+        r = True
         self.espaco()
         print("--- Configuração de Leitura ---")
         print("Configuração Atual:")
@@ -14,11 +17,11 @@ class TelaConfigManga(Tela):
         print("1 - Alterar a Configuração de Leitura")
         print("2 - Sair")
 
-        while True:
+        while r:
             try:
                 escolha = input("Digite sua opção: ")
                 if escolha == '1':
-                    self.altConfig()
+                    r = self.altConfig()
                 elif escolha == '2':
                     print("Saindo da configuração.")
                     break
@@ -27,25 +30,27 @@ class TelaConfigManga(Tela):
             except Exception as e:
                 print(f"Ocorreu um erro: {e}")
 
-    def altConfig(self):
+    def altConfig(self) -> bool:
         idManga = self.selManga()
         if idManga is None:
-            return
+            return False
 
         idVolume = self.selVol(idManga)
         if idVolume is None:
-            return
+            return False
 
         idCapitulo = self.selCap(idVolume)
         if idCapitulo is None:
-            return
+            return False
 
-        resultado = self.controller.salvarConfiguracao(idManga, idVolume, idCapitulo)
+        resultado = self.mangaController.saveConfig(idManga, idVolume, idCapitulo)
         print(f"\n{resultado}")
 
-        self.controller.listaConfig()
+        print(self.mangaController.listaConfig())
+
+        return False
             
-    def selManga(self) -> int:
+    def selManga(self) -> Optional[int|None]:
         mangas = self.mangaController.listarMangas()
         
         if not mangas:
@@ -66,8 +71,8 @@ class TelaConfigManga(Tela):
             except ValueError:
                 print("Entrada inválida. Digite um número.")
 
-    def selVol(self):
-        volumes = self.mangaController.listarVolumes()
+    def selVol(self, idManga) -> Optional[int|None]:
+        volumes = self.mangaController.listarVolumes(idManga)
 
         if not volumes:
             print("Nenhum volume encontrado.")
@@ -87,8 +92,8 @@ class TelaConfigManga(Tela):
             except ValueError:
                 print("Entrada inválida. Digite um número.")
 
-    def selCap(self):
-        capitulos = self.mangaController.listarCapitulos()
+    def selCap(self, idVolume) -> Optional[int|None]:
+        capitulos = self.mangaController.listarCapitulos(idVolume)
 
         if not capitulos:
             print("Nenhum capitulo encontrado.")
