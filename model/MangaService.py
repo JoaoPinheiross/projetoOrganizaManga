@@ -26,7 +26,7 @@ class MangaService:
             caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{capitulo.numero:02}")
         else:
             caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{int(capitulo.numero):02}")
-        caminho.mkdir(exist_ok=True)
+        caminho.mkdir(parents=True, exist_ok=True)
 
         return caminho
     
