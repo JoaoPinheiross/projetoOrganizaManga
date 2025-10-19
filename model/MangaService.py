@@ -2,6 +2,7 @@ from typing import List
 from pathlib import Path
 from itertools import chain
 import re
+import subprocess
 
 from .bd.MangaDaoImpl import MangaDaoImpl
 from .bd.VolumeDaoImpl import VolumeDaoImpl
@@ -17,15 +18,19 @@ class MangaService:
         self.configMangaDaoImpl = ConfigMangaDaoImpl()
 
 
-    def definirCaminho(self) -> Path:
+    def definirCaminho(self, v=0) -> Path:
         config = self.configMangaDaoImpl.listarConfig()
         manga = self.mangaDaoImpl.pesquisarManga(config.idManga)
         volume = self.volumeDaoImpl.pesquisarVolume(config.idVolume)
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo)
-        if (capitulo.numero % 1 != 0):
-            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{capitulo.numero:02}")
+        if v == 0:
+            if (capitulo.numero % 1 != 0):
+                caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{capitulo.numero:02}")
+            else:
+                caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{int(capitulo.numero):02}")
         else:
-            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{int(capitulo.numero):02}")
+            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}")
+                           
         caminho.mkdir(parents=True, exist_ok=True)
 
         return caminho
@@ -110,3 +115,30 @@ class MangaService:
     
     def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
         return self.configMangaDaoImpl.saveConfig(idManga, idVolume, idCapitulo)
+    
+    def converteMobi(self):
+        """Converte o volume para um arquivo .MOBI.
+
+        Args:
+            Esta função não possui parâmetros.
+
+        Returns:
+            str: O nome do arquivo da capa.
+        """
+        # Caminho para a pasta de entrada
+        entrada = self.definirCaminho(v=1)
+        # Caminho para a pasta de saída
+        saida = self.definirCaminho(v=1)
+        
+        # Comando a ser executado
+        comando = [
+            r"C:\mangas\KCC_c2e_9.1.0.exe",
+            "-m", "-s", "-c", "2", "-r", "1", "-p", "KPW", "-f", "MOBI",
+            "-o", saida, entrada
+        ]
+        try:
+            # Executar o comando
+            subprocess.run(comando)
+            print(f"Conversão foi enviada para o diretório {saida}.")
+        except:
+            print("A conversão não foi possível.")
