@@ -116,12 +116,10 @@ class MangaService:
     def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
         return self.configMangaDaoImpl.saveConfig(idManga, idVolume, idCapitulo)
     
-    def converteMobi(self):
+    def converteMobi(self) -> None:
         """Converte o volume para um arquivo .MOBI.
-
         Args:
             Esta função não possui parâmetros.
-
         Returns:
             str: O nome do arquivo da capa.
         """
