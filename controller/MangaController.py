@@ -53,4 +53,4 @@ class MangaController:
         return self.mangaService.saveConfig(idManga, idVolume, idCapitulo)
     
     def converteMobi(self) -> None:
-        self.converteMobi()
+        self.mangaService.converteMobi()

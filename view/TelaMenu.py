@@ -16,19 +16,23 @@ class TelaMenu(Tela):
             print("4 - Baixar Capa")
             print("9 - Sair")
 
-            ent = int(input())
+            try:
 
-            casos = {
-                1: lambda: self.mangaController.organizaManga(),
-                2: lambda: self.telaConfigManga.exibir(),
-                3: lambda: self.mangaController.convertiMobi(),
-                4: "capa",
-                9: lambda: self.encerrar()
-            }
-            
-            caso = casos.get(ent, lambda: print("Opção inválida. Tente novamente."))
+                ent = int(input())
 
-            result = caso()
+                casos = {
+                    1: lambda: self.mangaController.organizaManga(),
+                    2: lambda: self.telaConfigManga.exibir(),
+                    3: lambda: self.mangaController.converteMobi(),
+                    4: "capa",
+                    9: lambda: self.encerrar()
+                }
+                
+                caso = casos.get(ent, lambda: print("Opção inválida. Tente novamente."))
+
+                result = caso()
+            except ValueError:
+                print("Digite um valor númerico.")
 
     def encerrar(self):
         self.r = False
