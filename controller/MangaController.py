@@ -52,5 +52,6 @@ class MangaController:
     def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
         return self.mangaService.saveConfig(idManga, idVolume, idCapitulo)
     
-    def converteMobi(self) -> None:
-        self.mangaService.converteMobi()
+    def converteMobi(self, idManga: int, idVolume: int) -> None:
+        caminho = self.mangaService.definirCaminhoConv(idManga, idVolume)
+        self.mangaService.converteMobi(caminho)

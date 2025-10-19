@@ -18,18 +18,15 @@ class MangaService:
         self.configMangaDaoImpl = ConfigMangaDaoImpl()
 
 
-    def definirCaminho(self, v=0) -> Path:
+    def definirCaminhoOrg(self) -> Path:
         config = self.configMangaDaoImpl.listarConfig()
         manga = self.mangaDaoImpl.pesquisarManga(config.idManga)
         volume = self.volumeDaoImpl.pesquisarVolume(config.idVolume)
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo)
-        if v == 0:
-            if (capitulo.numero % 1 != 0):
-                caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{capitulo.numero:02}")
-            else:
-                caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{int(capitulo.numero):02}")
+        if (capitulo.numero % 1 != 0):
+            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{capitulo.numero:02}")
         else:
-            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}")
+            caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}\cap_{int(capitulo.numero):02}")
                            
         caminho.mkdir(parents=True, exist_ok=True)
 
@@ -62,7 +59,7 @@ class MangaService:
 
     def organizarManga(self) -> bool:
         caminhoOrig = Path(r'C:\Users\jpjoa\Downloads\capManga')
-        caminhoDest = self.definirCaminho()
+        caminhoDest = self.definirCaminhoOrg()
 
         # Cria um objeto Path para a pasta desejada
         try:
@@ -116,17 +113,32 @@ class MangaService:
     def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
         return self.configMangaDaoImpl.saveConfig(idManga, idVolume, idCapitulo)
     
-    def converteMobi(self) -> None:
+    def definirCaminhoConv(self, idManga: int, idVolume: int) -> Path:
+        '''Define um caminho para realizar a conversão do manga.
+        Args:
+            idManga (int): Id do manga selecionado no banco de dados.
+            idVolume (int): Id do volume selecionado no banco de dados.
+        Returns:
+            Path: Retorna o objeto Path com o caminho do volume do manga.
+        '''
+        manga = self.mangaDaoImpl.pesquisarManga(idManga)
+        volume = self.volumeDaoImpl.pesquisarVolume(idVolume)
+        
+        caminho = Path(rf"c:\mangas\{manga.nome}\vol_{volume.numero:03}")
+
+        return caminho
+    
+    def converteMobi(self, caminho) -> None:
         """Converte o volume para um arquivo .MOBI.
         Args:
-            Esta função não possui parâmetros.
+            caminho (Path): O caminho do manga convertido.
         Returns:
-            str: O nome do arquivo da capa.
+            None: Sem retornos.
         """
         # Caminho para a pasta de entrada
-        entrada = self.definirCaminho(v=1)
+        entrada = caminho
         # Caminho para a pasta de saída
-        saida = self.definirCaminho(v=1)
+        saida = caminho
         
         # Comando a ser executado
         comando = [
