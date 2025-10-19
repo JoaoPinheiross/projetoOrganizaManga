@@ -12,16 +12,18 @@ class TelaMenu(Tela):
             print("MENU")
             print("1 - Organizar Manga")
             print("2 - Configura Manga")
-            print("3 - Baixar Capa")
-            print("4 - Sair")
+            print("3 - Converter Manga")
+            print("4 - Baixar Capa")
+            print("9 - Sair")
 
             ent = int(input())
 
             casos = {
                 1: lambda: self.mangaController.organizaManga(),
                 2: lambda: self.telaConfigManga.exibir(),
-                3: "capa",
-                4: lambda: self.encerrar()
+                3: lambda: self.mangaController.convertiMobi(),
+                4: "capa",
+                9: lambda: self.encerrar()
             }
             
             caso = casos.get(ent, lambda: print("Opção inválida. Tente novamente."))
