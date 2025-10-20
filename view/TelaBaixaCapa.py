@@ -7,6 +7,7 @@ class TelaBaixaCapa(Tela):
         self.telaSel = TelaSel(mangaController)
     
     def exibir(self):
+        self.limparTerminal()
         print("-- Baixar Capa --")
         idManga = self.telaSel.selManga()
         idVolume = self.telaSel.selVol(idManga)
