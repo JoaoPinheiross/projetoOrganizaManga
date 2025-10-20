@@ -3,6 +3,7 @@ from pathlib import Path
 from itertools import chain
 import re
 import subprocess
+import requests
 
 from .bd.MangaDaoImpl import MangaDaoImpl
 from .bd.VolumeDaoImpl import VolumeDaoImpl
@@ -128,12 +129,12 @@ class MangaService:
 
         return caminho
     
-    def converteMobi(self, caminho) -> None:
+    def converteMobi(self, caminho: Path) -> None:
         """Converte o volume para um arquivo .MOBI.
         Args:
             caminho (Path): O caminho do manga convertido.
         Returns:
-            None: Sem retornos.
+            None: Não possui retorno.
         """
         # Caminho para a pasta de entrada
         entrada = caminho
@@ -152,3 +153,56 @@ class MangaService:
             print(f"Conversão foi enviada para o diretório {saida}.")
         except:
             print("A conversão não foi possível.")
+
+    def baixarCapa(self, caminho: Path, idManga: int, idVolume: int) -> None:
+        '''Realiza o download da capa do volume do manga.
+        Args:
+            caminho (Path): O caminho do volume do manga.
+            idManga (int): O id do manga.
+            volume (int): O número do volume.
+        Returns:
+            None: Não possui retorno.
+        '''
+        capaVol = ""
+        manga = self.mangaDaoImpl.pesquisarManga(idManga)
+        volume = self.volumeDaoImpl.pesquisarVolume(idVolume)
+        url = f"https://api.mangadex.org/manga?title={manga.nome}&limit=10"
+        res = requests.get(url).json()
+        for m in res['data']: #type: ignore
+            titulos = m['attributes']['title'] #type: ignore
+            if manga.nome.lower() in [t.lower() for t in titulos.values()]: #type: ignore
+                idMangaDex = m['id'] #type: ignore
+
+        limite = "100"
+        offset = 0
+        continuar = True
+        while continuar:
+            chapters_url = (
+                    f"https://api.mangadex.org/cover?"
+                    f"manga[]={idMangaDex}&limit={limite}&offset={offset}" #type: ignore
+                )
+            
+            res = requests.get(chapters_url).json()
+
+            if 'data' not in res or not res['data']:
+                continuar = False  # acabou os capítulos
+            for c in res['data']: #type: ignore
+                if c["attributes"]["volume"] == str(volume.numero):
+                    capa: str = c["attributes"]["fileName"]
+                    if (type(capa) == str):
+                        if (capaVol == ""):
+                            capaVol = capa
+                    else:
+                        raise ValueError(f"Capa do volume {volume.numero} não encontrada.")
+                    
+            offset += int(limite)
+        url_imagem = f"https://uploads.mangadex.org/covers/{idMangaDex}/{capaVol}" #type: ignore
+        print(url_imagem)
+        imagem = requests.get(url_imagem, headers={"User-Agent": "Mozilla/5.0"})
+        caminho = caminho / f"capa_vol_{volume.numero:03}.jpeg"
+        if imagem.status_code == 200:
+            with open(caminho, "wb") as f:
+                f.write(imagem.content)
+            print(f"Capa salva em {caminho}")
+        else:
+            print("Não foi possível salvar a capa.")

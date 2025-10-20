@@ -55,3 +55,7 @@ class MangaController:
     def converteMobi(self, idManga: int, idVolume: int) -> None:
         caminho = self.mangaService.definirCaminhoConv(idManga, idVolume)
         self.mangaService.converteMobi(caminho)
+
+    def baixaCapa(self, idManga: int, idVolume: int) -> None:
+        caminho = self.mangaService.definirCaminhoConv(idManga, idVolume)
+        self.mangaService.baixarCapa(caminho, idManga, idVolume)
