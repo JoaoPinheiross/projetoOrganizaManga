@@ -1,12 +1,14 @@
 from view.Tela import Tela
 from view.TelaConfigManga import TelaConfigManga
 from view.TelaConverteManga import TelaConverteManga
+from view.TelaBaixaCapa import TelaBaixaCapa
 
 class TelaMenu(Tela):
     def __init__(self, mangaController):
         super().__init__(mangaController)
         self.telaConfigManga = TelaConfigManga(mangaController)
         self.telaConverteManga = TelaConverteManga(mangaController)
+        self.telaBaixaCapa = TelaBaixaCapa(mangaController)
         self.r = True
 
     def exibir(self):
@@ -26,7 +28,7 @@ class TelaMenu(Tela):
                     1: lambda: self.mangaController.organizaManga(),
                     2: lambda: self.telaConfigManga.exibir(),
                     3: lambda: self.telaConverteManga.exibir(),
-                    4: "capa",
+                    4: lambda: self.telaBaixaCapa.exibir(),
                     9: lambda: self.encerrar()
                 }
                 
