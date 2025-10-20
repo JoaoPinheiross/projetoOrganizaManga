@@ -83,6 +83,11 @@ class MangaService:
         config = self.configMangaDaoImpl.listarConfig()
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1)
         volume = capitulo.idVolume
+        if volume > self.mangaDaoImpl.pesquisarManga(config.idVolume).numero:
+            caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
+            self.converteMobi(caminho)
+            self.baixarCapa(caminho, config.idManga, config.idVolume)
+            
         self.configMangaDaoImpl.saveConfig(config.idManga, volume, capitulo.idCapitulo)
         return True
     
