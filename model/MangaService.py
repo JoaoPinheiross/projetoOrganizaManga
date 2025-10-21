@@ -83,9 +83,11 @@ class MangaService:
         config = self.configMangaDaoImpl.listarConfig()
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1)
         volume = capitulo.idVolume
-        if volume > self.mangaDaoImpl.pesquisarManga(config.idVolume).numero:
+        if volume > self.volumeDaoImpl.pesquisarVolume(config.idVolume).numero:
+            print("Convertendo volume...")
             caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
             self.converteMobi(caminho)
+            print("Salvando capa do volume...")
             self.baixarCapa(caminho, config.idManga, config.idVolume)
             
         self.configMangaDaoImpl.saveConfig(config.idManga, volume, capitulo.idCapitulo)
@@ -202,7 +204,6 @@ class MangaService:
                     
             offset += int(limite)
         url_imagem = f"https://uploads.mangadex.org/covers/{idMangaDex}/{capaVol}" #type: ignore
-        print(url_imagem)
         imagem = requests.get(url_imagem, headers={"User-Agent": "Mozilla/5.0"})
         caminho = caminho / f"capa_vol_{volume.numero:03}.jpeg"
         if imagem.status_code == 200:
