@@ -47,7 +47,12 @@ class MangaService:
         if nome == '_.jpg':
             return (0, 0)  # vem em primeiro
         elif arquivo.suffix == '.jpg':
-            return (0, 1)  # vem em primeiro
+            match = re.search(r'\((\d+)\)', nome)
+            if match:
+                numero = int(match.group(1))
+                return (1, numero)  # depois, ordena pelos números
+            else:
+                return (2, nome)  # qualquer outro tipo, vem por último
         elif nome == '_.png':
             return (0, 2)
         else:
