@@ -87,16 +87,25 @@ class MangaService:
 
         config = self.configMangaDaoImpl.listarConfig()
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1)
-        volume = capitulo.idVolume
-        if volume > self.volumeDaoImpl.pesquisarVolume(config.idVolume).numero:
+        if capitulo == None:
             print("Convertendo volume...")
             caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
             self.converteMobi(caminho)
             print("Salvando capa do volume...")
             self.baixarCapa(caminho, config.idManga, config.idVolume)
             
-        self.configMangaDaoImpl.saveConfig(config.idManga, volume, capitulo.idCapitulo)
-        return True
+            return True
+        else:
+            volume = capitulo.idVolume
+            if volume > self.volumeDaoImpl.pesquisarVolume(config.idVolume).numero:
+                print("Convertendo volume...")
+                caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
+                self.converteMobi(caminho)
+                print("Salvando capa do volume...")
+                self.baixarCapa(caminho, config.idManga, config.idVolume)
+                
+            self.configMangaDaoImpl.saveConfig(config.idManga, volume, capitulo.idCapitulo)
+            return True
     
     def listarMangas(self) -> List[Manga]:
         lista = self.mangaDaoImpl.listarMangas()
