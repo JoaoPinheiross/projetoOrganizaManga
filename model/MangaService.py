@@ -86,8 +86,8 @@ class MangaService:
             print(f"Erro: O diretório '{caminhoDest}' não foi encontrado.")
 
         config = self.configMangaDaoImpl.listarConfig()
-        capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1)
-        if capitulo == None:
+        capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1) # Confere se o capitulo seguinte existe
+        if capitulo == None: # Caso não exista mais capitulos, converte em mobi e finaliza
             print("Convertendo volume...")
             caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
             self.converteMobi(caminho)
@@ -96,7 +96,7 @@ class MangaService:
             
             return True
         else:
-            volume = capitulo.idVolume
+            volume = self.volumeDaoImpl.pesquisarVolume(capitulo.idVolume).numero
             if volume > self.volumeDaoImpl.pesquisarVolume(config.idVolume).numero:
                 print("Convertendo volume...")
                 caminho = self.definirCaminhoConv(config.idManga, config.idVolume)
