@@ -55,6 +55,8 @@ class MangaService:
                 return (2, nome)  # qualquer outro tipo, vem por último
         elif nome == '_.png':
             return (0, 2)
+        elif nome == '_.webp':
+            return (0, 1)
         else:
             match = re.search(r'\((\d+)\)', nome)
             if match:
