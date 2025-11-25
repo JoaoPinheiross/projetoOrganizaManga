@@ -1,12 +1,48 @@
 from typing import List
+import customtkinter as ct
 
 from model.MangaService import MangaService
 from model.Manga import Manga
-from view.Tela import Tela
+from view.BaseView import BaseTela
+from view.TelaMenu import TelaMenu
+from view.TelaConfig import TelaConfig
 
 class MangaController:
     def __init__(self):
         self.mangaService = MangaService()
+
+        self. tela = BaseTela()
+
+        self.frames: dict[str, ct.CTkFrame] = {}
+        self.definirFrames()
+
+    def iniciar(self) -> None:
+        '''
+            Inicia o Programa.
+        '''
+        for frame in self.frames.values():
+            frame.grid(row=0, column=0, sticky="nsew")
+        
+        self.tela.mainloop()
+    
+    def encerrar(self) -> None:
+        '''
+            Encerra o Programa.
+        '''
+        self.tela.destroy()
+
+    def definirFrames(self) -> None:
+        '''
+            Define os frames utilizados no programa.
+        '''
+        self.frames["menu"] = TelaMenu(self.tela, self)
+        self.frames["config"] = TelaConfig(self.tela, self)
+
+        self.trocaFrame("menu")
+
+    def trocaFrame(self, frame) -> None:
+        frame = self.frames[frame]
+        frame.tkraise()
     
     def organizaManga(self) -> None:
         '''Organiza os capitulos baixados.
