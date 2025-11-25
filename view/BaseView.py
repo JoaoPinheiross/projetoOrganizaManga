@@ -6,7 +6,7 @@ class BaseTela(ct.CTk):
         ct.set_appearance_mode("dark")
 
         self.title("Organizador De Mangas")
-        self.geometry("700x500+100+50")
+        self.geometry("800x500+100+50")
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)

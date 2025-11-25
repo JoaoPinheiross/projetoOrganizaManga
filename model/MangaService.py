@@ -124,13 +124,19 @@ class MangaService:
 
         return lista
     
-    def listaConfig(self):
+    def listaConfig(self) -> tuple[str, int, int]:
+        '''Retorna a configuração de manga atual.
+        Args:
+            Não possuí argumentos.
+        Returns
+            tuple[str, int, int]: configuração atual do manga.
+        '''
         mangaAtual = self.configMangaDaoImpl.listarConfig()
         nomeManga = self.mangaDaoImpl.pesquisarManga((mangaAtual.idManga)).nome
         numVolume = self.volumeDaoImpl.pesquisarVolume(mangaAtual.idVolume).numero
         numCapitulo = self.capituloDaoImpl.pesquisarCapitulo(mangaAtual.idCapitulo).numero 
 
-        mangaAtual = f"Nome: {nomeManga}\nVolume: {numVolume}\nCapitulo: {numCapitulo}"
+        mangaAtual = (nomeManga, numVolume, numCapitulo)
 
         return mangaAtual
     

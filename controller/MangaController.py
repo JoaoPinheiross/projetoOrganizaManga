@@ -74,12 +74,12 @@ class MangaController:
 
         return lista
     
-    def listaConfig(self) -> str:
+    def listaConfig(self) -> tuple[str, int, int]:
         '''Pesquisa a configuração de manga atual.
         Args:
             Não possuí argumentos.
         Returns
-            str: texto que exibe a configuração de manga atual.
+            tuple[str, int, int]: configuração atual do manga.
         '''
         mangaAtual = self.mangaService.listaConfig()
 
