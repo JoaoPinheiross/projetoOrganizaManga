@@ -15,3 +15,6 @@ class BaseFrame(ct.CTkFrame):
     def __init__(self, tela: BaseTela, controller):
         super().__init__(tela)
         self.controller = controller
+
+    def resetEstado(self):
+        pass

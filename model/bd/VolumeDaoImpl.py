@@ -17,10 +17,17 @@ class VolumeDaoImpl():
             volumes = list(session.scalars(query).all())
 
         return volumes
-
+    
     def pesquisarVolume(self, codVolume: int) -> Volume:
         with self.Session() as session:
             query = select(Volume)
             volume = session.get(Volume, codVolume)
 
+        return volume
+
+    def pesquisarVolumePorNumero(self, numeroVolume: int, codManga: int) -> Volume:
+        with self.Session() as session:
+            query = select(Volume).filter(Volume.numero == numeroVolume, Volume.idManga == codManga)
+            volume = session.scalar(query)
+            
         return volume

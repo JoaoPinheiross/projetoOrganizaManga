@@ -9,6 +9,8 @@ class TelaMenu(BaseFrame):
         super().__init__(tela, control)
         self.control = control
 
+        self.grid(row=0, column=0, sticky="nsew")
+
         # Botão
         fonte = ct.CTkFont(size=24, weight="bold")
         self.labelTitulo = ct.CTkLabel(self, text="Organizador De Mangas", font=fonte)
@@ -36,7 +38,7 @@ class TelaMenu(BaseFrame):
         self.grid_rowconfigure(self.grid_size()[1] + 1, weight=1)
     
     def organizarManga(self) -> None:
-        organizou = self.control.organizarManga()
+        organizou = self.control.organizaManga()
         if organizou:
             msg.showinfo("Organizador De Mangas", "Manga organizado com sucesso!")
         else:

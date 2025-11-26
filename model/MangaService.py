@@ -10,6 +10,8 @@ from .bd.VolumeDaoImpl import VolumeDaoImpl
 from .bd.CapituloDaoImpl import CapituloDaoImpl
 from .bd.ConfigMangaDaoImpl import ConfigMangaDaoImpl
 from model.Manga import Manga
+from model.Volume import Volume
+from model.Capitulo import Capitulo
 
 class MangaService:
     def __init__(self):
@@ -86,6 +88,7 @@ class MangaService:
 
         except FileNotFoundError:
             print(f"Erro: O diretório '{caminhoDest}' não foi encontrado.")
+            return False
 
         config = self.configMangaDaoImpl.listarConfig()
         capitulo = self.capituloDaoImpl.pesquisarCapitulo(config.idCapitulo + 1) # Confere se o capitulo seguinte existe
@@ -113,16 +116,45 @@ class MangaService:
         lista = self.mangaDaoImpl.listarMangas()
         
         return lista
+
+    def pesquisarMangaPorNome(self, nomeManga: str) -> Manga:
+        manga = self.mangaDaoImpl.pesquisarMangaPorNome(nomeManga)
+
+        return manga
     
-    def listarVolumes(self, idManga):
+    def listarVolumes(self, idManga) -> list[Volume]:
         lista = self.volumeDaoImpl.listarVolumes(idManga)
 
         return lista
     
+    def pesquisarVolumePorNumero(self, numeroVolume: int, codManga: int) -> Volume:
+        '''pesquisa o volume pelo número.
+        Args:
+            numeroVolume (int): O número do volume do manga.
+            codManga (int): O id do manga do volume.
+        Returns:
+            Volume: Retorna o volume com o número pesquisado
+        '''
+        volume = self.volumeDaoImpl.pesquisarVolumePorNumero(numeroVolume, codManga)
+
+        return volume
+
     def listarCapitulos(self, idVolume):
         lista = self.capituloDaoImpl.listarCapitulo(idVolume)
 
         return lista
+    
+    def pesquisarCapituloPorNumero(self, numeroCapitulo: int, codVolume: int) -> Capitulo:
+        '''Pesquisar o capítulo pelo número.
+        Args:
+            numeroCapitulo (int): O número do capítulo.
+            codVolume (int): O id do volume do capítulo.
+        Returns:
+            Capitulo: Retorna o capítulo com o número pesquisado
+        '''
+        capitulo = self.capituloDaoImpl.pesquisarCapituloPorNumero(numeroCapitulo, codVolume)
+
+        return capitulo
     
     def listaConfig(self) -> tuple[str, int, int]:
         '''Retorna a configuração de manga atual.
@@ -134,13 +166,13 @@ class MangaService:
         mangaAtual = self.configMangaDaoImpl.listarConfig()
         nomeManga = self.mangaDaoImpl.pesquisarManga((mangaAtual.idManga)).nome
         numVolume = self.volumeDaoImpl.pesquisarVolume(mangaAtual.idVolume).numero
-        numCapitulo = self.capituloDaoImpl.pesquisarCapitulo(mangaAtual.idCapitulo).numero 
+        numCapitulo = self.capituloDaoImpl.pesquisarCapitulo(mangaAtual.idCapitulo).numero
 
         mangaAtual = (nomeManga, numVolume, numCapitulo)
 
         return mangaAtual
     
-    def saveConfig(self, idManga, idVolume, idCapitulo) -> str:
+    def saveConfig(self, idManga, idVolume, idCapitulo) -> bool:
         return self.configMangaDaoImpl.saveConfig(idManga, idVolume, idCapitulo)
     
     def definirCaminhoConv(self, idManga: int, idVolume: int) -> Path:

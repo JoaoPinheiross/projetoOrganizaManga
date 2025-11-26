@@ -8,3 +8,6 @@ class MangaDao(Protocol):
 
     def pesquisarManga(self, codManga: int) -> Manga: #type: ignore
         pass
+
+    def pesquisarMangaPorNome(self, nomeManga: str) -> Manga: #type: ignore
+        pass

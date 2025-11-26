@@ -17,10 +17,17 @@ class CapituloDaoImpl():
             capitulos = list(session.scalars(query).all())
 
         return capitulos
-
+    
     def pesquisarCapitulo(self, codCapitulo: int) -> Capitulo:
         with self.Session() as session:
             query = select(Capitulo).where(Capitulo.idCapitulo == codCapitulo)
             capitulo = session.get(Capitulo, codCapitulo)
+
+        return capitulo
+
+    def pesquisarCapituloPorNumero(self, numeroCapitulo: int, codVolume: int) -> Capitulo:
+        with self.Session() as session:
+            query = select(Capitulo).where(Capitulo.numero == numeroCapitulo, Capitulo.idVolume == codVolume)
+            capitulo = session.scalar(query)
 
         return capitulo

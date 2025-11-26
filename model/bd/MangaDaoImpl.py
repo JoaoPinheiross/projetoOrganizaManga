@@ -24,3 +24,10 @@ class MangaDaoImpl:
             manga = session.get(Manga, codManga)
 
         return manga
+    
+    def pesquisarMangaPorNome(self, nomeManga: str) -> Manga:
+        with self.Session() as session:
+            query = select(Manga).filter(Manga.nome == nomeManga)
+            manga = session.scalar(query)
+
+        return manga

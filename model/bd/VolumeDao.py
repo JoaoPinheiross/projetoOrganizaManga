@@ -6,7 +6,11 @@ class VolumeDao(Protocol):
     # Lista os volumes do manga
     def listarVolumes(self) -> List[Volume]: #type: ignore
         pass
+    
+    # Pesquisa um volume
+    def pesquisarVolume(self, numeroVolume: int, codManga: int) -> Volume: #type: ignore
+        pass
 
-    # Pesquisa um volume pelo código
-    def pesquisarVolume(self, codVolume: int) -> Volume: #type: ignore
+    # Pesquisa um volume pelo número
+    def pesquisarVolumePorNumero(self, numeroVolume: int) -> Volume: #type: ignore
         pass
