@@ -190,7 +190,7 @@ class MangaService:
 
         return caminho
     
-    def converteMobi(self, caminho: Path) -> None:
+    def converteMobi(self, caminho: Path) -> bool:
         """Converte o volume para um arquivo .MOBI.
         Args:
             caminho (Path): O caminho do manga convertido.
@@ -212,10 +212,12 @@ class MangaService:
             # Executar o comando
             subprocess.run(comando)
             print(f"Conversão foi enviada para o diretório {saida}.")
+            return True
         except:
             print("A conversão não foi possível.")
+            return False
 
-    def baixarCapa(self, caminho: Path, idManga: int, idVolume: int) -> None:
+    def baixarCapa(self, caminho: Path, idManga: int, idVolume: int) -> bool:
         '''Realiza o download da capa do volume do manga.
         Args:
             caminho (Path): O caminho do volume do manga.
@@ -264,5 +266,7 @@ class MangaService:
             with open(caminho, "wb") as f:
                 f.write(imagem.content)
             print(f"Capa salva em {caminho}")
+            return True
         else:
             print("Não foi possível salvar a capa.")
+            return False

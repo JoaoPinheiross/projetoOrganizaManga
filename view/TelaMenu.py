@@ -22,10 +22,10 @@ class TelaMenu(BaseFrame):
         self.btnConfig = ct.CTkButton(self, text="Configuração", command=lambda: self.control.trocaFrame("config"))
         self.btnConfig.grid(row=3, column=1, pady=10)
 
-        self.btnConv = ct.CTkButton(self, text="Converter Manga")
+        self.btnConv = ct.CTkButton(self, text="Converter Manga", command=lambda: self.control.converteMobi())
         self.btnConv.grid(row=4, column=1, pady=10)
 
-        self.btnCapa = ct.CTkButton(self, text="Baixar Capa")
+        self.btnCapa = ct.CTkButton(self, text="Baixar Capa", command=lambda: self.control.baixaCapa())
         self.btnCapa.grid(row=5, column=1, pady=10)
 
         self.btnSair = ct.CTkButton(self, text="Sair", command=lambda: self.control.encerrar())
