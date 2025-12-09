@@ -11,6 +11,7 @@ class MangaController:
     def __init__(self):
         self.mangaService = MangaService()
         self. tela = BaseTela()
+        self.telaMenu = TelaMenu(self.tela, self)
 
         self.frame_classes = {
             "menu": TelaMenu,
@@ -162,8 +163,4 @@ class MangaController:
         idManga = config.idManga
         idVolume = config.idVolume
         caminho = self.mangaService.definirCaminhoConv(idManga, idVolume)
-        baixou = self.mangaService.baixarCapa(caminho, idManga, idVolume)
-        if baixou:
-            msg.showinfo("Organizador De Mangas", "Capa do volume baixada com sucesso!")
-        else:
-            msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao baixar a capa do volume.")
+        self.mangaService.baixarCapa(caminho, idManga, idVolume)

@@ -6,7 +6,18 @@ class BaseTela(ct.CTk):
         ct.set_appearance_mode("dark")
 
         self.title("Organizador De Mangas")
-        self.geometry("800x500+100+50")
+        
+        self.resizable(False, False)
+
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        width = 800
+        height = 500
+
+        x_position = int((screen_width / 2) - (width / 2))
+        y_position = int((screen_height / 2) - height)
+
+        self.geometry(f"{width}x{height}+{x_position}+{y_position}")
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -16,5 +27,52 @@ class BaseFrame(ct.CTkFrame):
         super().__init__(tela)
         self.controller = controller
 
-    def resetEstado(self):
-        pass
+    def mostrarCarregamento(self, msg: str) -> ct.CTkToplevel:
+        """Cria e mostra a janela de carregamento Toplevel."""
+        top = ct.CTkToplevel(self)
+        top.title("Carregando...")
+
+        top.grid_rowconfigure(0, weight=1)
+        top.grid_rowconfigure(3, weight=1)
+        top.grid_columnconfigure(0, weight=1)
+        top.grid_columnconfigure(2, weight=1)
+
+        child_width = 400
+        child_height = 250
+        
+        # Posição e Dimensões da Janela Principal
+        master_width = 800
+        master_height = 500
+        master_x = 100
+        master_y = 50
+
+        # 3. Calcula a nova posição (x, y)
+        # Calcula onde o canto superior esquerdo da nova janela deve ficar
+        # para que ela esteja centralizada dentro da janela principal.
+        
+        # Posição X calculada: (X do Master) + (Metade da Largura do Master) - (Metade da Largura do Child)
+        x = int(master_x + (master_width / 2) - (child_width / 2))
+        print("c", x)
+        print("m", master_x)
+        
+        # Posição Y calculada: (Y do Master) + (Metade da Altura do Master) - (Metade da Altura do Child)
+        y = int(master_y + (master_height / 2) - (child_height / 2))
+
+        # 4. Aplica a nova geometria
+        # Formato: "largura x altura + posiçãoX + posiçãoY"
+        top.geometry(f"{child_width}x{child_height}+{x}+{y}")
+        
+        top.grab_set() # Bloqueia eventos para a janela principal (opcional, mas comum para loading)
+
+        lblMsg = ct.CTkLabel(top, text=msg)
+        lblMsg.grid(row=1, column=1)
+
+
+        progressbar = ct.CTkProgressBar(top, orientation="horizontal", mode="indeterminate")
+        progressbar.grid(row=2, column=1)
+        progressbar.start()
+        
+        # Garante que a janela de carregamento seja desenhada imediatamente
+        top.update()
+
+        return top

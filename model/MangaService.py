@@ -261,6 +261,7 @@ class MangaService:
             offset += int(limite)
         url_imagem = f"https://uploads.mangadex.org/covers/{idMangaDex}/{capaVol}" #type: ignore
         imagem = requests.get(url_imagem, headers={"User-Agent": "Mozilla/5.0"})
+        caminho.mkdir(parents=True, exist_ok=True)
         caminho = caminho / f"capa_vol_{volume.numero:03}.jpeg"
         if imagem.status_code == 200:
             with open(caminho, "wb") as f:

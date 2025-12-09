@@ -1,6 +1,7 @@
 import tkinter as tk
 import customtkinter as ct
 import tkinter.messagebox as msg
+import threading
 
 from view.BaseView import BaseFrame, BaseTela
 
@@ -25,7 +26,7 @@ class TelaMenu(BaseFrame):
         self.btnConv = ct.CTkButton(self, text="Converter Manga", command=lambda: self.control.converteMobi())
         self.btnConv.grid(row=4, column=1, pady=10)
 
-        self.btnCapa = ct.CTkButton(self, text="Baixar Capa", command=lambda: self.control.baixaCapa())
+        self.btnCapa = ct.CTkButton(self, text="Baixar Capa", command=lambda: self.baixarCapa())
         self.btnCapa.grid(row=5, column=1, pady=10)
 
         self.btnSair = ct.CTkButton(self, text="Sair", command=lambda: self.control.encerrar())
@@ -43,3 +44,19 @@ class TelaMenu(BaseFrame):
             msg.showinfo("Organizador De Mangas", "Manga organizado com sucesso!")
         else:
             msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao organizar o manga.")
+
+    def baixarCapa(self) -> None:
+        '''
+            Baixa a capa do volume
+        '''
+        telaCarregamento = self.mostrarCarregamento("Baixando a capa...")
+        try:
+            self.process_thread = threading.Thread(target=self.control.baixaCapa())
+            self.process_thread.start()
+            if telaCarregamento is not None and telaCarregamento.winfo_exists():
+                telaCarregamento.destroy()
+            msg.showinfo("Organizador De Mangas", "Capa do volume baixada com sucesso!")
+        except:
+            msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao baixar a capa do volume.")
+
+        
