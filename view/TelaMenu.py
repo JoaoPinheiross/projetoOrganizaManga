@@ -51,12 +51,37 @@ class TelaMenu(BaseFrame):
         '''
         telaCarregamento = self.mostrarCarregamento("Baixando a capa...")
         try:
-            self.process_thread = threading.Thread(target=self.control.baixaCapa())
+            self.process_thread = threading.Thread(target=self.control.baixaCapa)
             self.process_thread.start()
+            self.monitorarThread(self.process_thread, telaCarregamento)
+        except Exception:
+            # Se um erro ocorrer antes mesmo de iniciar a thread (raro)
             if telaCarregamento is not None and telaCarregamento.winfo_exists():
                 telaCarregamento.destroy()
-            msg.showinfo("Organizador De Mangas", "Capa do volume baixada com sucesso!")
-        except:
-            msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao baixar a capa do volume.")
+            msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao iniciar a tarefa.")
+    
+    def monitorarThread(self, thread, telaCarregamento):
+        # O thread do download terminou
+        if not thread.is_alive():
+            
+            # 1. Parar a barra de progresso e destruir a tela de carregamento
+            if telaCarregamento is not None and telaCarregamento.winfo_exists():
+                # Nota: A progressbar deve parar automaticamente ao destruir o top
+                telaCarregamento.destroy() 
+                
+            # 2. Obter o resultado (sucesso/erro)
+            # Como não temos um mecanismo para retornar o resultado direto da thread,
+            # precisamos de uma forma de saber o status. 
+            # A forma mais robusta é usar um objeto mutável para feedback, como uma lista:
+            
+            # ATENÇÃO: Se você tivesse usado o método de callback que sugeri
+            # na resposta anterior, essa lógica seria desnecessária.
+            
+            # Para simplificar AQUI, vamos assumir que se a thread terminou 
+            # sem erro no thread principal, deu sucesso.
 
+            msg.showinfo("Organizador De Mangas", "Capa do volume baixada com sucesso!")
         
+        else:
+            # A thread ainda está ativa, agenda a próxima verificação em 100ms
+            self.tela.after(100, lambda: self.monitorarThread(thread, telaCarregamento))

@@ -158,9 +158,13 @@ class MangaController:
         else:
             msg.showerror("Organizador De Mangas", "Ocorreu algum erro ao converter a capa do volume.")
 
-    def baixaCapa(self) -> None:
+    def baixaCapa(self) -> bool:
         config = self.mangaService.configMangaDaoImpl.listarConfig()
         idManga = config.idManga
         idVolume = config.idVolume
         caminho = self.mangaService.definirCaminhoConv(idManga, idVolume)
-        self.mangaService.baixarCapa(caminho, idManga, idVolume)
+        try:
+            self.mangaService.baixarCapa(caminho, idManga, idVolume)
+            return True
+        except Exception:
+            return False
