@@ -9,15 +9,15 @@ class BaseTela(ct.CTk):
         
         self.resizable(False, False)
 
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        width = 800
-        height = 500
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+        self.width = 800
+        self.height = 500
 
-        x_position = int((screen_width / 2) - (width / 2))
-        y_position = int((screen_height / 2) - height)
+        self.x_position = int((self.screen_width / 2) - (self.width / 2))
+        self.y_position = int((self.screen_height / 2) - self.height)
 
-        self.geometry(f"{width}x{height}+{x_position}+{y_position}")
+        self.geometry(f"{self.width}x{self.height}+{self.x_position}+{self.y_position}")
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -26,6 +26,7 @@ class BaseFrame(ct.CTkFrame):
     def __init__(self, tela: BaseTela, controller):
         super().__init__(tela)
         self.controller = controller
+        self.tela = tela
 
     def mostrarCarregamento(self, msg: str) -> ct.CTkToplevel:
         """Cria e mostra a janela de carregamento Toplevel."""
@@ -41,10 +42,10 @@ class BaseFrame(ct.CTkFrame):
         child_height = 250
         
         # Posição e Dimensões da Janela Principal
-        master_width = 800
-        master_height = 500
-        master_x = 100
-        master_y = 50
+        master_width = self.tela.width
+        master_height = self.tela.height
+        master_x = self.tela.x_position
+        master_y = self.tela.y_position
 
         # 3. Calcula a nova posição (x, y)
         # Calcula onde o canto superior esquerdo da nova janela deve ficar
@@ -52,8 +53,6 @@ class BaseFrame(ct.CTkFrame):
         
         # Posição X calculada: (X do Master) + (Metade da Largura do Master) - (Metade da Largura do Child)
         x = int(master_x + (master_width / 2) - (child_width / 2))
-        print("c", x)
-        print("m", master_x)
         
         # Posição Y calculada: (Y do Master) + (Metade da Altura do Master) - (Metade da Altura do Child)
         y = int(master_y + (master_height / 2) - (child_height / 2))
