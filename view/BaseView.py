@@ -30,6 +30,7 @@ class BaseFrame(ct.CTkFrame):
 
     def mostrarCarregamento(self, msg: str) -> ct.CTkToplevel:
         """Cria e mostra a janela de carregamento Toplevel."""
+
         top = ct.CTkToplevel(self)
         top.title("Carregando...")
 
