@@ -205,7 +205,7 @@ class MangaService:
         # Comando a ser executado
         comando = [
             r"C:\mangas\KCC_c2e_9.1.0.exe",
-            "-m", "-s", "-c", "2", "-r", "1", "-p", "KPW", "-f", "EPUB",
+            "-m", "-s", "-c", "2", "-r", "1", "-p", "KPW", "-f", "MOBI",
             "-o", saida, entrada
         ]
         try:
