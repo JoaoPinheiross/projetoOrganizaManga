@@ -6,7 +6,7 @@ from typing import List
 from model.Volume import Volume
 
 class VolumeDaoImpl():
-    senha = quote_plus("Pipoca9190")
+    senha = quote_plus("Pinheiro@04")
     engine = create_engine(f"mysql+mysqlconnector://root:{senha}@localhost:3306/projetomanga", echo=False)
 
     Session = sessionmaker(bind=engine)
