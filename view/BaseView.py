@@ -61,6 +61,8 @@ class BaseFrame(ct.CTkFrame):
         # 4. Aplica a nova geometria
         # Formato: "largura x altura + posiçãoX + posiçãoY"
         top.geometry(f"{child_width}x{child_height}+{x}+{y}")
+
+        top.wait_visibility()
         
         top.grab_set() # Bloqueia eventos para a janela principal (opcional, mas comum para loading)
 
