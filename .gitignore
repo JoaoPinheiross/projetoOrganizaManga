@@ -5,6 +5,7 @@ __pycache__/
 # Outros arquivos e pastas de ambiente virtual comuns (opcional, mas recomendado)
 venv/
 .env
+data/
 
 # PyInstaller build directory
 build/
