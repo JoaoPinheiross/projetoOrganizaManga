@@ -1,12 +1,19 @@
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 from urllib.parse import quote_plus
+from dotenv import load_dotenv
+import os
 
 from model.ConfigManga import ConfigManga
 
 class ConfigMangaDaoImpl():
-    senha = quote_plus("Pinheiro@04")
-    engine = create_engine(f"mysql+mysqlconnector://root:{senha}@localhost:3306/projetomanga", echo=False)
+    load_dotenv()
+    DB_HOST = os.getenv("BD_HOST")
+    DB_NOME = os.getenv("BD_NOME")
+    DB_USUARIO = os.getenv("BD_USUARIO")
+    DB_SENHA = os.getenv("BD_SENHA")
+    senha = quote_plus(f'{DB_SENHA}')
+    engine = create_engine(f"mysql+mysqlconnector://{DB_USUARIO}:{senha}@{DB_HOST}:3306/{DB_NOME}", echo=False)
 
     Session = sessionmaker(bind=engine)
 
