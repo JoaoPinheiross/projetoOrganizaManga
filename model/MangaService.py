@@ -229,12 +229,15 @@ class MangaService:
         capaVol = ""
         manga = self.mangaDaoImpl.pesquisarManga(idManga)
         volume = self.volumeDaoImpl.pesquisarVolume(idVolume)
-        url = f"https://api.mangadex.org/manga?title={manga.nome}&limit=10"
-        res = requests.get(url).json()
-        for m in res['data']: #type: ignore
-            titulos = m['attributes']['title'] #type: ignore
-            if manga.nome.lower() in [t.lower() for t in titulos.values()]: #type: ignore
-                idMangaDex = m['id'] #type: ignore
+        if manga.nome == 'Monster':
+            idMangaDex = "d9e30523-9d65-469e-92a2-302995770950"
+        else:
+            url = f"https://api.mangadex.org/manga?title={manga.nome}&limit=10"
+            res = requests.get(url).json()
+            for m in res['data']: #type: ignore
+                titulos = m['attributes']['title'] #type: ignore
+                if manga.nome.lower() in [t.lower() for t in titulos.values()]: #type: ignore
+                    idMangaDex = m['id'] #type: ignore
 
         limite = "100"
         offset = 0
